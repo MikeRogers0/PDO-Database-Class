@@ -3,10 +3,14 @@
 /*
  * A DB helper class to make connecting to/querying with PDO a little easier.
  */
+
+require_once('MakeSQL.class.php');
+require_once('Transients.class.php');
+
 class DB{
 	protected $PDO; // Protected so in var_dump it will not overload your page with data.
-	private $tableSalt;
-	public $dbName, $makeSQL, $transients;
+	private $tablePrefix;
+	public $dbName, $makeSQL, $transients, $options;
 	
 	/**
 	 * Used for connecting via PDO to a mysql database.
@@ -25,76 +29,87 @@ class DB{
 	public function __construct($user, $pass=false, $dbName=false, $host='localhost', $options=array()){
 		// Set up the default options & merge them into the users ones
 		$options = array_replace(array(
-			'tableSalt' => 'slt_', // Table salts are appended to the start of a table name to make sql injections harder.
+			'tablePrefix' => 'pfx_', // Table salts are appended to the start of a table name to make sql injections harder.
 			'transients' => false, // Turn of transients by default, no point adding more memory if not used.
-			'driver_options', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING /*, PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true*/) // Turns on errors by default
+			'showErrors' => true // It will throw errors.
 		), $options);
+
+		$this->options = $options;
 		
 		$this->dbName = $dbName;
-		$this->tableSalt = $options['tableSalt'];
-		$this->PDO = null;
-		
-		if($options->transients){
-			$options->transients = new Transients($this->PDO);
-		}
 		
 		// Build the Data Source Name
 		$dsn = 'mysql:host='.$host.';';
 		if($dbName){
 			$dsn .= 'dbname='.$dbName.';'; // We might not always be connecting to a created database.
 		}
-		
+
 		// Now try to connect to MySQL.
-		try {
-			$this->PDO = new PDO($dsn, $user, $pass, $options['driver_options']);
-		} catch(PDOException $e) {
-			// If something goes wrong, PDO throws an exception with a nice error message.
-			echo 'Connection failed: ' . $e->getMessage();
+		try{
+			$this->PDO = new PDO($dsn, $user, $pass, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+		}catch(PDOException $e){
+			echo $e->getMessage();
+			return false; 
+		}
+
+		if(!$this->options['showErrors']){
+			$this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+		}
+
+		if($this->options['transients']){
+			$this->transients = new Transients($this->PDO);
 		}
 	}
 	
 	/*
-	 * Makes the table name with the salt.
+	 * Makes the table name with the prefix.
 	 */
 	public function getTableName($tableName){
-		return '`'.$this->dbName.'`.`'.$this->tableSalt.$tableName.'`';
+		return '`'.$this->dbName.'`.`'.$this->optons['tablePrefix'].$tableName.'`';
 	}
 	
 	/*
 	 * Creates the database. It the DB exists already, it clears it first. Than it selects it for use.
 	 */
-	public function createDatabase($dbName=false){
-		if($dbName){
-			$this->dbName = $dbName;
-		}
-		
+	public function createDatabase(){
 		$this->PDO->exec('CREATE DATABASE IF NOT EXISTS `'.$this->dbName.'`; DROP DATABASE `'.$this->dbName.'`; CREATE DATABASE IF NOT EXISTS `'.$this->dbName.'`;');
-		return $this->selectDatabase();
+		$this->selectDatabase();
+		return $this;
 	}
 	
 	/*
 	 * Selects the database for use.
 	 */
-	public function selectDatabase($dbName=false){
-		if($dbName){
-			$this->dbName = $dbName;
-		}
-		
-		return $this->PDO->exec('use `'.$this->dbName.'`');
+	public function selectDatabase(){
+		$this->PDO->exec('USE `'.$this->dbName.'`');
+		return $this;
 	}
 	
 	/*
 	 * Drop database
 	 */
 	public function dropDatabase(){
-		return $this->PDO->exec('DROP DATABASE `'.$this->dbName.'`;');
+		$this->PDO->exec('DROP DATABASE `'.$this->dbName.'`;');
+		return $this;
 	}
 	
 	/*
-	 * Creates a basic table
+	 * Creates a basic table.
+	 *
+	 * @param	string	tableName
+	 * 					The unprefixed table name.
+	 * @param	string	tableStructure
+	 * 					The SQL for after the CREATE TABLE `derpy` bit of SQL.
+	 *					In future I wanna make this accept an Array instead.
 	 */
 	public function createTable($tableName, $tableStructure){
-		
+		if(is_array($tableStructure)){
+			return $this; // Something for the future. 
+		}
+
+		$this->PDO->exec('CREATE TABLE  '.$this->getTableName($tableName).' '.$tableStructure);
+
+		return $this;
 	}
 }
 ?>

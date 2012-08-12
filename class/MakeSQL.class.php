@@ -13,7 +13,7 @@ class MakeSQL{
 		}
 		elseif(is_array($key)){ // for when the bind needs a count.
 			$key_count = count($key); // cache the count for performance.
-			while($i = 1; $i <= $key_count; $i++;){
+			for($i = 1; $i <= $key_count; $i++){
 				$keys[] = '`'.$key.'` = :'.$key.$i.':';
 			}
 			return $keys;
