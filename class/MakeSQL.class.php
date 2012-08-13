@@ -7,14 +7,19 @@ class MakeSQL{
 	/*
 	 * Make the `key` = :key: string for SQL.
 	 */
-	 public static function keyEqualsKey($key){
-		if(is_string($key)){
-			return '`'.$key.'` = :'.$key.':';
-		}
-		elseif(is_array($key)){ // for when the bind needs a count.
-			$key_count = count($key); // cache the count for performance.
-			for($i = 1; $i <= $key_count; $i++){
-				$keys[] = '`'.$key.'` = :'.$key.$i.':';
+	 public static function keyEqualsKey($key, $value=0){
+		if(is_string($key) && $value === 0){
+			return '`'.$key.'` = :'.$key;
+		} elseif(is_array($key) && $value === 0){
+			$i = 0;
+			foreach(array_keys($key) as $ke){
+				$keys[] = '`'.$ke.'` = :'.$ke;
+			}
+			return $keys;
+		}else{ // for when the bind needs a count.
+			$valueCount = count($value);
+			for($i = 0; $i < $valueCount; $i++){
+				$keys[] = '`'.$key.'` = :'.$key.$i;
 			}
 			return $keys;
 		}
@@ -23,25 +28,24 @@ class MakeSQL{
 	/*
 	 * Binds an array to a query with a prefix. So `key` becomes `:key:` .
 	 * 
-	 * @param	PDO		query
-	 * 					The PDO query.
 	 * @param	array	keyValue
 	 * 					The values with keys to be binded.
 	 */
-	public static function bind($query, $keyValue){
+	public static function bind($keyValue){
+		$return = null;
 		if(is_array($keyValue)){
 			foreach($keyValue as $key => $value){
 				if(is_array($value)){ // If the value has sub values, for use in OR statments.
 					$count = 0;
 					foreach($value as $sValue){
-						$query->bindParam(':'.$key.$count++.':', $sValue);
+						$return[':'.$key.$count++] = $sValue;
 					}
 				} else {
-					$query->bindParam(':'.$key.':', $value);
+					$return[':'.$key] = $value;
 				}
 			}
 		}
-		return $query;
+		return $return;
 	}
 	
 	// Set up a where statement for PDO from an array
@@ -50,9 +54,9 @@ class MakeSQL{
 			$sql = 'WHERE ';
 			foreach($keyValue as $key => $value){ // cycle though the key => value
 				if(is_array($value)){ // if the value is array, lets assume I want an OR statement.
-					$where[] = '('.implode(' OR ', $this->keyEqualsKey($key)).')';
+					$where[] = '('.implode(' OR ', MakeSQL::keyEqualsKey($key, $value)).')';
 				}else {
-					$where[] = $this->keyEqualsKey($key);
+					$where[] = MakeSQL::keyEqualsKey($key);
 				}
 			}
 			
@@ -69,7 +73,7 @@ class MakeSQL{
 	 */ 
 	public static function update($keyValue){ 
 		if(is_array($keyValue)){
-			return 'SET '.implode(' , ', $this->keyEqualsKey(array_keys($keyValue)));
+			return 'SET '.implode(' , ', MakeSQL::keyEqualsKey($keyValue));
 		}
 		return '';
 	}
@@ -79,7 +83,7 @@ class MakeSQL{
 		if(is_array($keyValue)){
 			foreach($keyValue as $key => $value){
 				$fields[] = '`'.$key.'`';
-				$values[] = ':'.$key.':';
+				$values[] = ':'.$key;
 			}
 			
 			return '('.implode(' , ',$fields).') VALUES '.'('.implode(' , ',$values).')';

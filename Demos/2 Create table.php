@@ -25,4 +25,6 @@ try{
 }catch(PDOException $e){
 	echo $e->getMessage();
 }
+
+echo 'No Errors? Than your table was created.';
 ?>

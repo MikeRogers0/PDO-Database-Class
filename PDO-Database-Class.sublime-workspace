@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"create",
+				"createTable"
+			],
+			[
 				"font-",
 				"font-style"
 			],
@@ -19,9 +23,53 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 107.0,
+		"height": 67.0,
 		"selected_items":
 		[
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"git s",
+				"Git: Status"
+			],
+			[
+				"git",
+				"Git: Commit"
+			],
+			[
+				"git p",
+				"Git: Push"
+			],
+			[
+				"git c",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add..."
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
+			[
+				"if",
+				"Snippet: function __construct"
+			],
+			[
+				"",
+				"Snippet: if … else …"
+			],
 			[
 				"git co",
 				"Git: Commit"
@@ -35,7 +83,7 @@
 				"Package Control: List Packages"
 			]
 		],
-		"width": 449.0
+		"width": 593.0
 	},
 	"console":
 	{
@@ -52,12 +100,24 @@
 	},
 	"file_history":
 	[
+		"/Users/MikeRogers/Sites/PDO-Database-Class/class/MakeSQL.class.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/Demos/2 Create table.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/class/DB.class.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/Demos/1 Create a database.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/Demos/3 Select data to a table.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/Demos/3 Add data to a table.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/Demos/db-config.ini",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/Demos/db-config.inc.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/class/Transients.class.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/class/DBException.class.php",
+		"/Users/MikeRogers/Sites/PDO-Database-Class/readme.md",
+		"/Users/MikeRogers/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Users/MikeRogers/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/MikeRogers/Sites/cdha.org/wp-content/themes/cdha/style.less",
 		"/Users/MikeRogers/Sites/cdha.org/wp-content/themes/cdha/style.css",
 		"/Users/MikeRogers/Sites/cdha.org/wp-content/themes/cdha/header.php",
 		"/Users/MikeRogers/Library/Application Support/Sublime Text 2/Packages/Package Control/Package Control.sublime-settings",
 		"/Users/MikeRogers/Sites/cdha.org/wp-content/themes/cdha/comments.php",
-		"/Users/MikeRogers/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
 		"/Users/MikeRogers/Sites/fullondesign.co.uk/httpdocs/wp-content/themes/fullondesign/header.php"
 	],
 	"find":
@@ -76,6 +136,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"->options-",
+			"tableSalt",
 			"#nav .drop.hover a",
 			"#nav .drop:hover a",
 			"#nav .drop:hover a,",
@@ -91,6 +153,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"tablePrefix",
 			"/art/"
 		],
 		"reverse": false,
@@ -113,7 +176,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{
@@ -152,6 +215,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"",
+				"readme.md"
+			]
 		],
 		"width": 0.0
 	},
@@ -167,10 +234,10 @@
 		],
 		"width": 380.0
 	},
-	"show_minimap": true,
+	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 202.0,
+	"side_bar_width": 221.0,
 	"status_bar_visible": true
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * A DB helper class to make connecting to/querying with PDO a little easier.
  */
@@ -8,9 +7,7 @@ require_once('MakeSQL.class.php');
 require_once('Transients.class.php');
 
 class DB{
-	protected $PDO; // Protected so in var_dump it will not overload your page with data.
-	private $tablePrefix;
-	public $dbName, $makeSQL, $transients, $options;
+	public $tablePrefix, $PDO, $dbName, $makeSQL, $transients, $options;
 	
 	/**
 	 * Used for connecting via PDO to a mysql database.

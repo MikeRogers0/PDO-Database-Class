@@ -12,11 +12,4 @@ $options = array(
 	'tablePrefix' => 'mySlt_',
 	'showErrors' => true
 );
-
-/*
- * Consider storing your DB details in an .ini file & getting PHP you parse it instead of the above.
- *
-	$db = parse_ini_file('db-config.ini', true);
-	print_r($db);
- */
 ?>

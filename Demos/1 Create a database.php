@@ -25,4 +25,6 @@ try{
 }catch(PDOException $e){ // Any errors will be caught & displayed.
 	echo $e->getMessage();
 }
+
+echo 'No Errors? Database was made ok than!';
 ?>
