@@ -54,7 +54,7 @@ class DB{
 		}
 
 		if($this->options['transients']){
-			$this->transients = new Transients($this->PDO);
+			$this->transients = new Transients($this->PDO, $this->options['tablePrefix']);
 		}
 	}
 	
@@ -62,7 +62,7 @@ class DB{
 	 * Makes the table name with the prefix.
 	 */
 	public function getTableName($tableName){
-		return '`'.$this->dbName.'`.`'.$this->optons['tablePrefix'].$tableName.'`';
+		return '`'.$this->dbName.'`.`'.$this->options['tablePrefix'].$tableName.'`';
 	}
 	
 	/*
