@@ -24,3 +24,5 @@ Thumbs.db
 /usr/
 /var/
 /web_users/
+*.sublime-project
+*.sublime-workspace
