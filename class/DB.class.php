@@ -25,7 +25,7 @@ class DB{
 	 */ 
 	public function __construct($user, $pass=false, $dbName=false, $host='localhost', $options=array()){
 		// Set up the default options & merge them into the users ones
-		$options = array_replace(array(
+		$options = array_merge(array(
 			'tablePrefix' => 'pfx_', // Table salts are appended to the start of a table name to make sql injections harder.
 			'transients' => false, // Turn of transients by default, no point adding more memory if not used.
 			'showErrors' => true // It will throw errors.
